@@ -37,7 +37,7 @@
     <string name="filler" formatted="true">填充</string>
     <string name="duration_format" formatted="true">%d 分钟</string>
 
-    <string name="app_name">CloudStream</string>
+    <string name="app_name">影视</string>
     <string name="play_with_app_name">使用 CloudStream 播放</string>
     <string name="title_home">主页</string>
     <string name="title_search">搜索</string>

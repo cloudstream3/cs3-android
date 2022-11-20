@@ -55,31 +55,31 @@ fun getCurrentLocale(context: Context): String {
 // Emoji Character Encoding Data --> C/C++/Java Src
 // https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes leave blank for auto
 val appLanguages = arrayListOf(
-    Triple("", "Spanish", "es"),
+    Triple("", "Español", "es"), // Spanish
     Triple("", "English", "en"),
-    Triple("", "Viet Nam", "vi"),
-    Triple("", "Dutch", "nl"),
-    Triple("", "French", "fr"),
-    Triple("", "Greek", "el"),
-    Triple("", "Swedish", "sv"),
+    Triple("", "Tiếng Việt", "vi"), // Viet Nam
+    Triple("", "Nederlands", "nl"), // Dutch
+    Triple("", "Français", "fr"), // French
+    Triple("", "ελληνικά", "el"), // Greek
+    Triple("", "Svenska", "sv"), // Swedish
     Triple("", "Tagalog", "tl"),
-    Triple("", "Polish", "pl"),
-    Triple("", "Hindi", "hi"),
-    Triple("", "Malayalam", "ml"),
-    Triple("", "Norsk", "no"),
-    Triple("", "German", "de"),
-    Triple("", "Arabic", "ar"),
-    Triple("", "Turkish", "tr"),
-    Triple("", "Macedonian", "mk"),
+    Triple("", "Polski", "pl"), // Polish
+    Triple("", "हिन्दी", "hi"), // Hindi
+    Triple("", "മലയാളം", "ml"), // Malayalam
+    Triple("", "Norsk bokmål", "no"), // Norsk
+    Triple("", "Deutsch", "de"), // German
+    Triple("", "العربية", "ar"), // Arabic
+    Triple("", "Türkçe", "tr"), // Turkish
+    Triple("", "македонски јазик", "mk"), // Macedonian
     Triple("\uD83C\uDDF5\uD83C\uDDF9", "Portuguese", "pt"),
     Triple("\uD83C\uDDE7\uD83C\uDDF7", "Brazilian Portuguese", "bp"),
-    Triple("", "Romanian", "ro"),
-    Triple("", "Italian", "it"),
-    Triple("", "Chinese", "zh"),
+    Triple("", "româna", "ro"), // Romanian
+    Triple("", "Italiano", "it"), // Italian
+    Triple("", "中文", "zh"), // Chinese
     Triple("\uD83C\uDDEE\uD83C\uDDE9", "Indonesian", "in"),
-    Triple("", "Czech", "cs"),
-    Triple("", "Croatian", "hr"),
-    Triple("", "Bulgarian", "bg"),
+    Triple("", "čeština", "cs"), // Czech
+    Triple("", "hrvatski", "hr"), // Croatian
+    Triple("", "български", "bg"), // Bulgarian
 ).sortedBy { it.second } //ye, we go alphabetical, so ppl don't put their lang on top
 
 class SettingsGeneral : PreferenceFragmentCompat() {
