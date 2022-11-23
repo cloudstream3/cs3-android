@@ -17,12 +17,12 @@ class APIRepository(val api: MainAPI) {
         var dubStatusActive = HashSet<DubStatus>()
 
         val noneApi = object : MainAPI() {
-            override var name = "None"
+            override var name = AcraApplication.context?.getString(R.string.none) ?: "None"
             override val supportedTypes = emptySet<TvType>()
             override var lang = ""
         }
         val randomApi = object : MainAPI() {
-            override var name = "Random"
+            override var name = AcraApplication.context?.getString(R.string.home_random) ?: "Random"
             override val supportedTypes = emptySet<TvType>()
             override var lang = ""
         }
