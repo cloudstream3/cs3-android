@@ -38,7 +38,7 @@
     <string name="duration_format" formatted="true">%d 分钟</string>
 
     <string name="app_name">影视</string>
-    <string name="play_with_app_name">使用 CloudStream 播放</string>
+    <string name="play_with_app_name">使用影视播放</string>
     <string name="title_home">主页</string>
     <string name="title_search">搜索</string>
     <string name="title_downloads">下载</string>
@@ -212,7 +212,7 @@
     <string name="updates_settings">显示应用更新</string>
     <string name="updates_settings_des">启动时自动搜索更新</string>
     <string name="uprereleases_settings">更新至预览版</string>
-    <string name="uprereleases_settings_des">搜索预览版更新替代仅搜索完整版本</string>
+    <string name="uprereleases_settings_des">允许更新到尚未稳定的测试版</string>
     <string name="redo_setup_process">重新运行安装向导</string>
     <string name="github">Github</string>
     <string name="lightnovel">由相同开发者开发的轻小说应用</string>
@@ -346,7 +346,7 @@
     <string name="video_ram_description">设置过高可能导致崩溃。如果您使用如 Android TV 或旧手机此类低内存设备，请勿修改</string>
     <string name="video_disk_description">设置过高可能导致如 Android TV 此类低存储空间设备出现系统问题</string>
 
-    <string name="dns_pref">DNS over HTTPS</string>
+    <string name="dns_pref">安全 DNS</string>
     <string name="dns_pref_summary">防止 DNS 劫持</string>
 
     <string name="add_site_pref">复制片源</string>
@@ -365,22 +365,7 @@
 
     <string name="legal_notice">免责声明</string>
     <string name="legal_notice_key" translatable="false">legal_notice_key</string>
-    <string name="legal_notice_text" translatable="false">Any legal issues regarding the content on this application
-        should be taken up with the actual file hosts and providers themselves as we are not affiliated with them.
-
-        In case of copyright infringement, please directly contact the responsible parties or the streaming websites.
-
-        The app is purely for educational and personal use.
-
-        CloudStream 3 does not host any content on the app, and has no control over what media is put up or taken down.
-        CloudStream 3 functions like any other search engine, such as Google. CloudStream 3 does not host, upload or
-        manage any videos, films or content. It simply crawls, aggregates and displayes links in a convenient,
-        user-friendly interface.
-
-        It merely scrapes 3rd-party websites that are publicly accessable via any regular web browser. It is the
-        responsibility of user to avoid any actions that might violate the laws governing his/her locality. Use
-        CloudStream 3 at your own risk.
-    </string>
+    <string name="legal_notice_text" translatable="false">本应用仅提供视频播放功能，所有图片、视频等文件均系他人提供, 您可能从第三方提供的服务上获得相关内容。本应用对其合法性概不负责，亦不承担任何法律责任，您应当对使用这些服务的结果自行承担风险。</string>
     <string name="category_general">通用</string>
     <string name="random_button_settings">随机按钮</string>
     <string name="random_button_settings_desc">在主页中显示随机按钮</string>
@@ -461,11 +446,11 @@
 
     <!--
     Example text (pangram) can optionally be translated; if you do, include all the letters in the alphabet,
-    see: 
+    see:
 	https://en.wikipedia.org/w/index.php?title=Pangram&oldid=225849300
 	https://en.wikipedia.org/wiki/The_quick_brown_fox_jumps_over_the_lazy_dog
     -->
-    <string name="subtitles_example_text">The quick brown fox jumps over the lazy dog</string>
+    <string name="subtitles_example_text">我以前和你一样也是个冒险家，直到我的膝盖中了一箭。</string>
 
     <string name="recommended">推荐</string>
     <string name="player_loaded_subtitles" formatted="true">已加载 %s</string>
@@ -543,7 +528,7 @@
     <string name="plugins_disabled" formatted="true">已禁用：%d</string>
     <string name="plugins_not_downloaded" formatted="true">未下载：%d</string>
     <string name="plugins_updated" formatted="true">已更新 %d 插件</string>
-    <string name="blank_repo_message">CloudStream 默认不安装片源。您需要从仓库中安装片源。\n\nBecause of a brainless DMCA takedown by Sky Uk Limited 🤮 we cannot link the repository sites in app.\n\n加入我们的 Discord 获得链接或在网上搜索。</string>
+    <string name="blank_repo_message">未安装资源插件。</string>
     <string name="view_public_repositories_button">查看社区仓库</string>
     <string name="view_public_repositories_button_short">公开列表</string>
     <string name="uppercase_all_subtitles">字幕全大写</string>
