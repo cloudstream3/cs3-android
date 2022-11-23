@@ -2,15 +2,18 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto">
     <Preference
-            android:key="@string/mal_key"
-            android:icon="@drawable/mal_logo" />
+        android:key="@string/mal_key"
+        android:icon="@drawable/mal_logo" />
 
     <Preference
-            android:key="@string/anilist_key"
-            android:icon="@drawable/ic_anilist_icon" />
+        android:key="@string/anilist_key"
+        android:icon="@drawable/ic_anilist_icon" />
     <Preference
-            android:key="@string/opensubtitles_key"
-            android:icon="@drawable/open_subtitles_icon" />
+        android:key="@string/opensubtitles_key"
+        android:icon="@drawable/open_subtitles_icon" />
+    <Preference
+        android:key="@string/github_key"
+        android:icon="@drawable/ic_github_logo" />
 <!--    <Preference-->
 <!--            android:key="@string/nginx_key"-->
 <!--            android:icon="@drawable/nginx" />-->

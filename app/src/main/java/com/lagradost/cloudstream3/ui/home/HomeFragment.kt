@@ -125,6 +125,7 @@ class HomeFragment : Fragment() {
         val configEvent = Event<Int>()
         var currentSpan = 1
         val listHomepageItems = mutableListOf<SearchResponse>()
+        val reloadStoredDataEvent = Event<Unit>()
         val handler = Handler(android.os.Looper.getMainLooper())
 
         private val errorProfilePics = listOf(
@@ -495,6 +496,7 @@ class HomeFragment : Fragment() {
         reloadStored()
         afterPluginsLoadedEvent += ::firstLoadHomePage
         mainPluginsLoadedEvent += ::firstLoadHomePage
+        reloadStoredDataEvent += ::reloadStoredEvent
 
         bottomSheetDialog?.onResume(context)
     }
@@ -502,7 +504,12 @@ class HomeFragment : Fragment() {
     override fun onStop() {
         afterPluginsLoadedEvent -= ::firstLoadHomePage
         mainPluginsLoadedEvent -= ::firstLoadHomePage
+        reloadStoredDataEvent -= ::reloadStoredEvent
         super.onStop()
+    }
+
+    private fun reloadStoredEvent(input: Unit) {
+        reloadStored()
     }
 
     private fun reloadStored() {

@@ -186,6 +186,10 @@
     <string name="episode_sync_settings_des">自动同步当前剧集进度</string>
 
     <string name="restore_settings">从备份中恢复数据</string>
+    <string name="automatic_restore_settings">自动备份到 Github</string>
+
+    <string name="cloud_backups_off">关闭自动备份</string>
+    <string name="cloud_backups_on">自动备份配置文件到 Gist</string>
 
     <string name="backup_settings">备份数据</string>
     <string name="restore_success">已加载备份文件</string>
