@@ -38,6 +38,7 @@ import com.lagradost.cloudstream3.APIHolder.filterProviderByPreferredMedia
 import com.lagradost.cloudstream3.APIHolder.getApiFromNameNull
 import com.lagradost.cloudstream3.APIHolder.getApiProviderLangSettings
 import com.lagradost.cloudstream3.APIHolder.getId
+import com.lagradost.cloudstream3.AcraApplication.Companion.getActivity
 import com.lagradost.cloudstream3.AcraApplication.Companion.getKey
 import com.lagradost.cloudstream3.MainActivity.Companion.afterPluginsLoadedEvent
 import com.lagradost.cloudstream3.MainActivity.Companion.mainPluginsLoadedEvent
@@ -144,34 +145,31 @@ class HomeFragment : Fragment() {
         fun Activity.loadHomepageList(
             item: HomePageList,
             deleteCallback: (() -> Unit)? = null,
-        ) {
-            loadHomepageList(
+        ): BottomSheetDialog? {
+            return loadHomepageList(
                 expand = HomeViewModel.ExpandableHomepageList(item, 1, false),
                 deleteCallback = deleteCallback,
                 expandCallback = null
             )
         }
 
-        @SuppressLint("StaticFieldLeak")
-        private var bottomSheetDialogBuilder: BottomSheetDialog? = null
-
         fun Activity.loadHomepageList(
             expand: HomeViewModel.ExpandableHomepageList,
             deleteCallback: (() -> Unit)? = null,
             expandCallback: (suspend (String) -> HomeViewModel.ExpandableHomepageList?)? = null
-        ) {
+        ): BottomSheetDialog? {
             val context = this
-            bottomSheetDialogBuilder = BottomSheetDialog(context)
+            var bottomSheetDialogBuilder: BottomSheetDialog? = BottomSheetDialog(context)
             bottomSheetDialogBuilder!!.setContentView(R.layout.home_episodes_expanded)
-            val title = bottomSheetDialogBuilder!!.findViewById<TextView>(R.id.home_expanded_text)!!
+            val title = bottomSheetDialogBuilder.findViewById<TextView>(R.id.home_expanded_text)!!
             val item = expand.list
             title.text = item.name
             val recycle =
-                bottomSheetDialogBuilder!!.findViewById<AutofitRecyclerView>(R.id.home_expanded_recycler)!!
+                bottomSheetDialogBuilder.findViewById<AutofitRecyclerView>(R.id.home_expanded_recycler)!!
             val titleHolder =
-                bottomSheetDialogBuilder!!.findViewById<FrameLayout>(R.id.home_expanded_drag_down)!!
+                bottomSheetDialogBuilder.findViewById<FrameLayout>(R.id.home_expanded_drag_down)!!
 
-            val delete = bottomSheetDialogBuilder!!.home_expanded_delete
+            val delete = bottomSheetDialogBuilder.home_expanded_delete
             delete.isGone = deleteCallback == null
             if (deleteCallback != null) {
                 delete.setOnClickListener {
@@ -221,7 +219,7 @@ class HomeFragment : Fragment() {
                             it.window?.setWindowAnimations(-1)
                             it.hide()
                         }
-                    }, 400)
+                    }, 200)
                 }
             }.apply {
                 hasNext = expand.hasNext
@@ -261,14 +259,24 @@ class HomeFragment : Fragment() {
 
             configEvent += spanListener
 
-            bottomSheetDialogBuilder!!.setOnDismissListener {
+            bottomSheetDialogBuilder.setOnDismissListener {
                 configEvent -= spanListener
-                bottomSheetDialogBuilder = null
             }
 
             //(recycle.adapter as SearchAdapter).notifyDataSetChanged()
 
-            bottomSheetDialogBuilder!!.show()
+            bottomSheetDialogBuilder.show()
+
+            return bottomSheetDialogBuilder
+        }
+
+        fun BottomSheetDialog.onResume(context: Context?) {
+            // resume dialog
+            this.window?.setWindowAnimations(-1)
+            this.show()
+            handler.postDelayed({
+                this.window?.setWindowAnimations(R.style.BottomSheetDialog)
+            }, 400)
         }
 
         fun getPairList(
@@ -439,6 +447,8 @@ class HomeFragment : Fragment() {
 
     private val homeViewModel: HomeViewModel by activityViewModels()
 
+    private var bottomSheetDialog: BottomSheetDialog? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -485,14 +495,8 @@ class HomeFragment : Fragment() {
         reloadStored()
         afterPluginsLoadedEvent += ::firstLoadHomePage
         mainPluginsLoadedEvent += ::firstLoadHomePage
-        // 恢复 Dialog
-        bottomSheetDialogBuilder?.let {
-            it.window?.setWindowAnimations(-1)
-            it.show()
-            handler.postDelayed({
-                bottomSheetDialogBuilder?.window?.setWindowAnimations(R.style.BottomSheetDialog)
-            }, 400)
-        }
+
+        bottomSheetDialog?.onResume(context)
     }
 
     override fun onStop() {
@@ -927,7 +931,7 @@ class HomeFragment : Fragment() {
             )
 
             home_bookmarked_child_more_info?.setOnClickListener {
-                activity?.loadHomepageList(
+                bottomSheetDialog = activity?.loadHomepageList(
                     HomePageList(
                         getString(R.string.error_bookmarks_text), //home_bookmarked_parent_item_title?.text?.toString() ?: getString(R.string.error_bookmarks_text),
                         bookmarks
@@ -936,6 +940,7 @@ class HomeFragment : Fragment() {
                     deleteAllBookmarkedData()
                     homeViewModel.loadStoredData(null)
                 }
+                bottomSheetDialog?.setOnDismissListener { bottomSheetDialog = null }
             }
         }
 
@@ -952,7 +957,7 @@ class HomeFragment : Fragment() {
             //}
 
             home_watch_child_more_info?.setOnClickListener {
-                activity?.loadHomepageList(
+                bottomSheetDialog = activity?.loadHomepageList(
                     HomePageList(
                         home_watch_parent_item_title?.text?.toString()
                             ?: getString(R.string.continue_watching),
@@ -962,6 +967,7 @@ class HomeFragment : Fragment() {
                     deleteAllResumeStateIds()
                     homeViewModel.loadResumeWatching()
                 }
+                bottomSheetDialog?.setOnDismissListener { bottomSheetDialog = null }
             }
         }
 
@@ -1119,9 +1125,10 @@ class HomeFragment : Fragment() {
             ParentItemAdapter(mutableListOf(), { callback ->
                 homeHandleSearch(callback)
             }, { item ->
-                activity?.loadHomepageList(item, expandCallback = {
+                bottomSheetDialog = activity?.loadHomepageList(item, expandCallback = {
                     homeViewModel.expandAndReturn(it)
                 })
+                bottomSheetDialog?.setOnDismissListener { bottomSheetDialog = null }
             }, { name ->
                 homeViewModel.expand(name)
             })
