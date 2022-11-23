@@ -403,7 +403,7 @@
                                     android:layout_height="wrap_content"
                                     android:ellipsize="end"
                                     android:foreground="@drawable/outline_drawable"
-                                    android:maxLength="1000"
+                                    android:maxLength="400"
                                     android:nextFocusUp="@id/result_back"
                                     android:nextFocusDown="@id/result_bookmark_button"
                                     android:paddingTop="5dp"
