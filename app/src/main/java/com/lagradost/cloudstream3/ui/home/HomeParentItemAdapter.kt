@@ -73,7 +73,7 @@ class ParentItemAdapter(
         // 3. moves empty results to the bottom (sortedBy is a stable sort)
         val new =
             newList.map { it.copy(list = it.list.copy(list = it.list.list.filterSearchResponse())) }
-                .sortedBy { it.list.list.isEmpty() }
+//                .sortedBy { it.list.list.isEmpty() }
 
         val diffResult = DiffUtil.calculateDiff(
             SearchDiffCallback(items, new)
@@ -140,6 +140,7 @@ class ParentItemAdapter(
         val title: TextView = itemView.home_parent_item_title
         val recyclerView: RecyclerView = itemView.home_child_recyclerview
         private val moreInfo: FrameLayout? = itemView.home_child_more_info
+        private val loadingShimmer: com.facebook.shimmer.ShimmerFrameLayout? = itemView.loading_shimmer
 
         fun update(expand: HomeViewModel.ExpandableHomepageList) {
             val info = expand.list
@@ -157,6 +158,7 @@ class ParentItemAdapter(
                 }
                 recyclerView.setLinearListLayout()
             }
+            loadingShimmer?.visibility = View.GONE
         }
 
         fun bind(expand: HomeViewModel.ExpandableHomepageList) {
@@ -172,6 +174,13 @@ class ParentItemAdapter(
             }
             recyclerView.setLinearListLayout()
             title.text = info.name
+            itemView.tag = info.name
+
+            if (info.list.isEmpty()) {
+                loadingShimmer?.startShimmer()
+            } else {
+                loadingShimmer?.visibility = View.GONE
+            }
 
             recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 var expandCount = 0

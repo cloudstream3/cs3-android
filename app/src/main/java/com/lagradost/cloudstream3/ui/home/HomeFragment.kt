@@ -6,7 +6,10 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.res.Configuration
+import android.content.res.Resources
+import android.graphics.Rect
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
@@ -38,7 +41,6 @@ import com.lagradost.cloudstream3.APIHolder.filterProviderByPreferredMedia
 import com.lagradost.cloudstream3.APIHolder.getApiFromNameNull
 import com.lagradost.cloudstream3.APIHolder.getApiProviderLangSettings
 import com.lagradost.cloudstream3.APIHolder.getId
-import com.lagradost.cloudstream3.AcraApplication.Companion.getActivity
 import com.lagradost.cloudstream3.AcraApplication.Companion.getKey
 import com.lagradost.cloudstream3.MainActivity.Companion.afterPluginsLoadedEvent
 import com.lagradost.cloudstream3.MainActivity.Companion.mainPluginsLoadedEvent
@@ -79,7 +81,6 @@ import com.lagradost.cloudstream3.utils.UIHelper.fixPaddingStatusbar
 import com.lagradost.cloudstream3.utils.UIHelper.fixPaddingStatusbarView
 import com.lagradost.cloudstream3.utils.UIHelper.getResourceColor
 import com.lagradost.cloudstream3.utils.UIHelper.getSpanCount
-import com.lagradost.cloudstream3.utils.UIHelper.getStatusBarHeight
 import com.lagradost.cloudstream3.utils.UIHelper.popupMenuNoIconsAndNoStringRes
 import com.lagradost.cloudstream3.utils.UIHelper.setImage
 import com.lagradost.cloudstream3.utils.UIHelper.setImageBlur
@@ -110,7 +111,6 @@ import kotlinx.android.synthetic.main.fragment_home.home_watch_holder
 import kotlinx.android.synthetic.main.fragment_home.home_watch_parent_item_title
 import kotlinx.android.synthetic.main.fragment_home.result_error_text
 import kotlinx.android.synthetic.main.fragment_home_tv.*
-import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.android.synthetic.main.home_episodes_expanded.*
 import kotlinx.android.synthetic.main.tvtypes_chips.*
 import kotlinx.android.synthetic.main.tvtypes_chips.view.*
@@ -1132,6 +1132,7 @@ class HomeFragment : Fragment() {
             }, { name ->
                 homeViewModel.expand(name)
             })
+
         home_master_recycler.setLinearListLayout()
         home_master_recycler?.setMaxViewPoolSize(0, Int.MAX_VALUE)
         home_master_recycler.layoutManager = object : LinearLayoutManager(context) {
@@ -1143,11 +1144,30 @@ class HomeFragment : Fragment() {
         reloadStored()
         loadHomePage()
 
-        home_loaded.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, _, scrollY, _, oldScrollY ->
+        fun scrollLazyLoading(scrollY: Int,recycler: RecyclerView) {
+            try {
+                // + nav_view.height
+                val displayTopEdge = recycler.top - Resources.getSystem().displayMetrics.heightPixels
+
+                for (i in 0 until recycler.childCount) {
+                    val childView: View = recycler.getChildAt(i)
+                    if (scrollY > (view.top + displayTopEdge)) {
+                        homeViewModel.lazyLoad(childView.tag.toString())
+                    }
+                }
+
+            } catch (e: Exception) {
+                logError(e)
+            }
+        }
+
+
+        home_loaded.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
             val dy = scrollY - oldScrollY
             if (dy > 0) { //check for scroll down
                 home_api_fab?.shrink() // hide
                 home_random?.shrink()
+                scrollLazyLoading(scrollY, home_master_recycler)
             } else if (dy < -5) {
                 if (!isTvSettings()) {
                     home_api_fab?.extend() // show

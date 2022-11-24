@@ -95,30 +95,39 @@ class APIRepository(val api: MainAPI) {
                     )
                 )
             } ?: run {
-                if (api.sequentialMainPage) {
-                    var first = true
-                    api.mainPage.map { data ->
-                        if (!first) // dont want to sleep on first request
-                            delay(api.sequentialMainPageDelay)
-                        first = false
-
+                api.mainPage.mapIndexed { index, data ->
+                    if (index == 0)
                         api.getMainPage(
                             page,
                             MainPageRequest(data.name, data.data, data.horizontalImages)
                         )
-                    }
-                } else {
-                    with(CoroutineScope(coroutineContext)) {
-                        api.mainPage.map { data ->
-                            async {
-                                api.getMainPage(
-                                    page,
-                                    MainPageRequest(data.name, data.data, data.horizontalImages)
-                                )
-                            }
-                        }.map { it.await() }
-                    }
+                    else emptyResponse(data.name, data.data, data.horizontalImages)
                 }
+
+//                if (api.sequentialMainPage) {
+//                    var first = true
+//                    api.mainPage.map { data ->
+//                        if (!first) // dont want to sleep on first request
+//                            delay(api.sequentialMainPageDelay)
+//                        first = false
+//
+//                        api.getMainPage(
+//                            page,
+//                            MainPageRequest(data.name, data.data, data.horizontalImages)
+//                        )
+//                    }
+//                } else {
+//                    with(CoroutineScope(coroutineContext)) {
+//                        api.mainPage.map { data ->
+//                            async {
+//                                api.getMainPage(
+//                                    page,
+//                                    MainPageRequest(data.name, data.data, data.horizontalImages)
+//                                )
+//                            }
+//                        }.map { it.await() }
+//                    }
+//                }
             }
         }
     }
@@ -142,5 +151,22 @@ class APIRepository(val api: MainAPI) {
             logError(throwable)
             return false
         }
+    }
+
+    private fun emptyResponse(
+        name: String,
+        data: String,
+        isHorizontalImages: Boolean,
+    ): HomePageResponse {
+        return newHomePageResponse(
+            list = listOf<HomePageList>(
+                HomePageList(
+                    name = name,
+                    list = listOf(),
+                    isHorizontalImages = isHorizontalImages
+                )
+            ),
+            hasNext = true
+        )
     }
 }

@@ -1,9 +1,11 @@
 package com.lagradost.cloudstream3.ui.home
 
+import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.recyclerview.widget.RecyclerView
 import com.lagradost.cloudstream3.*
 import com.lagradost.cloudstream3.APIHolder.apis
 import com.lagradost.cloudstream3.APIHolder.filterHomePageListByFilmQuality
@@ -29,6 +31,7 @@ import com.lagradost.cloudstream3.utils.DataStoreHelper.getResultWatchState
 import com.lagradost.cloudstream3.utils.DataStoreHelper.getViewPos
 import com.lagradost.cloudstream3.utils.USER_SELECTED_HOMEPAGE_API
 import com.lagradost.cloudstream3.utils.VideoDownloadHelper
+import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.withContext
@@ -160,7 +163,7 @@ class HomeViewModel : ViewModel() {
         MutableLiveData<Resource<Map<String, ExpandableHomepageList>>>(Resource.Loading())
     val page: LiveData<Resource<Map<String, ExpandableHomepageList>>> = _page
 
-    val lock: MutableSet<String> = mutableSetOf()
+    private val lock: MutableSet<String> = mutableSetOf()
 
     suspend fun expandAndReturn(name: String): ExpandableHomepageList? {
         if (lock.contains(name)) return null
@@ -266,12 +269,17 @@ class HomeViewModel : ViewModel() {
                 is Resource.Success -> {
                     try {
                         expandable.clear()
+                        loaded.clear()
                         data.value.forEach { home ->
                             home?.items?.forEach { list ->
                                 val filteredList =
                                     context?.filterHomePageListByFilmQuality(list) ?: list
                                 expandable[list.name] =
-                                    ExpandableHomepageList(filteredList, 1, home.hasNext)
+                                    ExpandableHomepageList(
+                                        list = filteredList,
+                                        currentPage = 1,
+                                        hasNext = home.hasNext,
+                                    )
                             }
                         }
 
@@ -364,4 +372,18 @@ class HomeViewModel : ViewModel() {
                 loadAndCancel(api)
             }
         }
+
+    private val loaded: MutableSet<String> = mutableSetOf()
+
+    @Synchronized
+    fun lazyLoad(name: String) {
+        if (loaded.contains(name)) return
+        loaded += name
+
+        if (expandable[name]?.list?.list?.isEmpty() == true) {
+            viewModelScope.launchSafe {
+                expandAndReturn(name)
+            }
+        }
+    }
 }
