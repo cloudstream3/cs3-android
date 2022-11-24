@@ -907,8 +907,8 @@ open class ResultFragment : ResultTrailerPlayer() {
                         syncModel.addFromUrl(d.url)
                     }
 
-                    result_description.setTextHtml(d.plotText)
-                    if (this !is ResultFragmentTv) // dont want this clickable on tv layout
+                    if (this !is ResultFragmentTv) { // don't want this clickable on tv layout
+                        result_description.setTextHtml(d.plotText.substring(200))
                         result_description?.setOnClickListener { view ->
                             view.context?.let { ctx ->
                                 val builder: AlertDialog.Builder =
@@ -917,6 +917,8 @@ open class ResultFragment : ResultTrailerPlayer() {
                                     .setTitle(d.plotHeaderText.asString(ctx))
                                     .show()
                             }
+                        } else {
+                            result_description.setTextHtml(d.plotText)
                         }
 
 

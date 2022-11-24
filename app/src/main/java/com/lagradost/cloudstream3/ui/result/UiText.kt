@@ -58,6 +58,14 @@ sealed class UiText {
             }
         }
     }
+
+    fun substring(len: Int): UiText {
+        val value = this.toString()
+        if (value.length > len) {
+            return DynamicString(value.substring(0,len) + "…")
+        }
+        return this
+    }
 }
 
 sealed class UiImage {
