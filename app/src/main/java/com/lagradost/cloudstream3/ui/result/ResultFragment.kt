@@ -917,10 +917,10 @@ open class ResultFragment : ResultTrailerPlayer() {
                                     .setTitle(d.plotHeaderText.asString(ctx))
                                     .show()
                             }
-                        } else {
-                            result_description.setTextHtml(d.plotText)
                         }
-
+                    } else {
+                        result_description.setTextHtml(d.plotText)
+                    }
 
                     result_tag?.removeAllViews()
 
