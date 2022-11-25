@@ -1158,9 +1158,10 @@ class HomeFragment : Fragment() {
 
                 for (i in 0 until recycler.childCount) {
                     val childView: View = recycler.getChildAt(i)
-                    if (scrollY > (view.top + displayTopEdge)) {
-                        homeViewModel.lazyLoad(childView.tag.toString())
+                    if (scrollY < (childView.top + displayTopEdge)) {
+                        break
                     }
+                    homeViewModel.lazyLoad(childView.tag.toString())
                 }
 
             } catch (e: Exception) {
