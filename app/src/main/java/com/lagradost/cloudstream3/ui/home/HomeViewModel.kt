@@ -1,11 +1,9 @@
 package com.lagradost.cloudstream3.ui.home
 
-import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.recyclerview.widget.RecyclerView
 import com.lagradost.cloudstream3.*
 import com.lagradost.cloudstream3.APIHolder.apis
 import com.lagradost.cloudstream3.APIHolder.filterHomePageListByFilmQuality
@@ -31,7 +29,6 @@ import com.lagradost.cloudstream3.utils.DataStoreHelper.getResultWatchState
 import com.lagradost.cloudstream3.utils.DataStoreHelper.getViewPos
 import com.lagradost.cloudstream3.utils.USER_SELECTED_HOMEPAGE_API
 import com.lagradost.cloudstream3.utils.VideoDownloadHelper
-import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.withContext
@@ -385,5 +382,15 @@ class HomeViewModel : ViewModel() {
                 expandAndReturn(name)
             }
         }
+    }
+
+    fun getExpandable(list: ExpandableHomepageList): ExpandableHomepageList {
+        if (list.list.list.isEmpty()) {
+            val data = expandable[list.list.name]?.list
+            if (data?.list?.isNotEmpty() == true) {
+                list.list = data
+            }
+        }
+        return list
     }
 }

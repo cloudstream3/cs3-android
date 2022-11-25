@@ -474,6 +474,7 @@ class HomeFragment : Fragment() {
 
     private val apiChangeClickListener = View.OnClickListener { view ->
         view.context.selectHomepage(currentApiName) { api ->
+            home_loaded.scrollTo(0,0)
             homeViewModel.loadAndCancel(api)
         }
         /*val validAPIs = view.context?.filterProviderByPreferredMedia()?.toMutableList() ?: mutableListOf()
@@ -1125,10 +1126,16 @@ class HomeFragment : Fragment() {
             ParentItemAdapter(mutableListOf(), { callback ->
                 homeHandleSearch(callback)
             }, { item ->
-                bottomSheetDialog = activity?.loadHomepageList(item, expandCallback = {
-                    homeViewModel.expandAndReturn(it)
-                })
-                bottomSheetDialog?.setOnDismissListener { bottomSheetDialog = null }
+                // lazy load cate data
+                val list = homeViewModel.getExpandable(item)
+                if (list.list.list.isEmpty()) {
+                    bottomSheetDialog = null
+                } else {
+                    bottomSheetDialog = activity?.loadHomepageList(list, expandCallback = {
+                        homeViewModel.expandAndReturn(it)
+                    })
+                    bottomSheetDialog?.setOnDismissListener { bottomSheetDialog = null }
+                }
             }, { name ->
                 homeViewModel.expand(name)
             })
