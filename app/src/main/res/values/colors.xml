@@ -12,8 +12,8 @@
     <color name="iconGrayBackground">#141414</color> <!--141419 202125-->
     <color name="boxItemBackground">#0E1117</color> <!-- 17171B 1B1B20-->
 
-    <color name="textColor">#e9eaee</color> <!--FFF-->
-    <color name="grayTextColor">#9ba0a4</color> <!-- 5e5f62-->
+    <color name="textColor">#E9E9E9</color> <!--FFF-->
+    <color name="grayTextColor">#99DDDDDD</color> <!-- 9ba0a4-->
     <color name="grayShimmer">#DCDCDC</color> <!-- 5e5f62-->
 
     <color name="searchColorTransparent">#1AFFFFFF</color> <!--DADADA-->
