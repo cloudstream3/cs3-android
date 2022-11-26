@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:backgroundTint="?attr/primaryGrayBackground"
+    android:background="?attr/primaryGrayBackground"
     android:clipToPadding="false"
     android:orientation="vertical"
     tools:context=".ui.settings.extensions.PluginDetailsFragment">
