@@ -373,6 +373,7 @@
     <string name="app_layout">应用布局</string>
     <string name="preferred_media_settings">首选类型</string>
     <string name="enable_nsfw_on_providers">在支持的片源中启用 NSFW 内容</string>
+    <string name="filter_ext_by_preferred_lang">按片源语言过滤插件列表</string>
     <string name="subtitles_encoding">字幕编码</string>
     <string name="category_providers">片源</string>
     <string name="category_ui">布局</string>
