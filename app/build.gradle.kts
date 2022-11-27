@@ -220,6 +220,9 @@ dependencies {
 
     // Library/extensions searching with Levenshtein distance
     implementation("me.xdrop:fuzzywuzzy:1.4.0")
+
+    // xpath
+    implementation ("cn.wanghaomiao:JsoupXpath:2.5.1")
 }
 
 tasks.register("androidSourcesJar", Jar::class) {
