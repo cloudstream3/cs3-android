@@ -221,7 +221,8 @@ dependencies {
     // Library/extensions searching with Levenshtein distance
     implementation("me.xdrop:fuzzywuzzy:1.4.0")
 
-    // xpath
+    // catvod
+    implementation(project(":catvod"))
     implementation ("cn.wanghaomiao:JsoupXpath:2.5.1")
 }
 

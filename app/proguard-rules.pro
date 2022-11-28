@@ -20,4 +20,7 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
+# XPath
 -keep class org.seimicrawler.xpath.** { *; }
+# CatVod
+-keep class com.github.catvod.crawler.** { *; }
