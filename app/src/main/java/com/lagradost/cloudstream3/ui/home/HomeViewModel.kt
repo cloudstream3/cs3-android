@@ -378,6 +378,8 @@ class HomeViewModel : ViewModel() {
         loaded += name
 
         if (expandable[name]?.list?.list?.isEmpty() == true) {
+            expandable[name]?.currentPage = 0
+
             viewModelScope.launchSafe {
                 expandAndReturn(name)
             }

@@ -1169,7 +1169,6 @@ class HomeFragment : Fragment() {
             }
         }
 
-
         home_loaded.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
             val dy = scrollY - oldScrollY
             if (dy > 0) { //check for scroll down
